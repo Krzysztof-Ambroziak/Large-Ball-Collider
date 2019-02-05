@@ -15,7 +15,7 @@ public class Vector2DTest {
     }
     
     @Test
-    public void setPositionFloatTest() {
+    public void setPosition() {
         float[] expected = new float[] {xf, yf};
         vectorFloat.setPosition(xf, yf);
         float[] actual = new float[] {
@@ -26,42 +26,19 @@ public class Vector2DTest {
     }
     
     @Test
-    public void setPositionDoubleTest() {
-        double[] expected = new double[] {xd, yd};
-        vectorDouble.setPosition(xd, yd);
-        double[] actual = new double[] {
-                vectorDouble.getX(),
-                vectorDouble.getY()
-        };
-        Assert.assertArrayEquals(expected, actual, 0f);
-    }
-    
-    @Test
-    public void getXFloatTest() {
-        vectorFloat.setPosition(xf, yf);
-        Assert.assertEquals(xf, (float)vectorFloat.getX(), 0f);
-    }
-    
-    @Test
-    public void getYFloatTest() {
-        vectorFloat.setPosition(xf, yf);
-        Assert.assertEquals(yf, (float)vectorFloat.getY(), 0f);
-    }
-    
-    @Test
-    public void getXDoubleTest() {
+    public void getX() {
         vectorDouble.setPosition(xd, yd);
         Assert.assertEquals(xd, vectorDouble.getX(), 0.0);
     }
     
     @Test
-    public void getYDoubleTest() {
+    public void getY() {
         vectorDouble.setPosition(xd, yd);
         Assert.assertEquals(yd, vectorDouble.getY(), 0.0);
     }
     
     @Test
-    public void normalizeFloatTest() {
+    public void normalize() {
         double len = Math.sqrt(xf * xf + yf * yf);
         Vector2D normalizedVector = new Vector2D.Float((float)(xf / len), (float)(yf / len));
         vectorFloat.setPosition(xf, yf);
@@ -70,15 +47,24 @@ public class Vector2DTest {
     }
     
     @Test
-    public void lengthTest() {
+    public void normalize1() {
+        double len = Math.sqrt(xd * xd + yd * yd);
+        Vector2D normalizedVector = new Vector2D.Double(xd / len, yd / len);
+        vectorDouble.setPosition(xd, yd);
+        
+        Assert.assertEquals(normalizedVector, vectorDouble.normalize());
+    }
+    
+    @Test
+    public void length() {
         double length = Math.sqrt((double)xf * (double)xf + (double)yf * (double)yf);
         vectorFloat.setPosition(xf, yf);
-    
+        
         Assert.assertEquals(length, vectorFloat.length(), 0.0);
     }
     
     @Test
-    public void lengthSqTest() {
+    public void lengthSq() {
         double lengthSq = (double)xf * (double)xf + (double)yf * (double)yf;
         vectorFloat.setPosition(xf, yf);
         
@@ -86,7 +72,7 @@ public class Vector2DTest {
     }
     
     @Test
-    public void dotProductTest() {
+    public void dotProduct() {
         float x2 = 2323.1740021f;
         float y2 = -23.1200129f;
         double dot = (double)xf * x2 + (double)yf * y2;
@@ -97,21 +83,12 @@ public class Vector2DTest {
     }
     
     @Test
-    public void normalizeDoubleTest() {
-        double len = Math.sqrt(xd * xd + yd * yd);
-        Vector2D normalizedVector = new Vector2D.Double(xd / len, yd / len);
-        vectorDouble.setPosition(xd, yd);
-        
-        Assert.assertEquals(normalizedVector, vectorDouble.normalize());
-    }
-    
-    @Test
-    public void equalsReflexiveTest() {
+    public void equals() {
         Assert.assertEquals(vectorFloat, vectorFloat);
     }
     
     @Test
-    public void equalsSymmetricTest() {
+    public void equals1() {
         Vector2D vector2 = new Vector2D.Float();
         vector2.setPosition(vectorFloat.getX(), vectorFloat.getY());
         Assert.assertEquals(vectorFloat, vector2);
@@ -119,7 +96,7 @@ public class Vector2DTest {
     }
     
     @Test
-    public void equalsTransitive() {
+    public void equals2() {
         Vector2D vector2 = new Vector2D.Float();
         Vector2D vector3 = new Vector2D.Float();
         vector2.setPosition(vectorFloat.getX(), vectorFloat.getY());
@@ -130,12 +107,12 @@ public class Vector2DTest {
     }
     
     @Test
-    public void equalsNullTest() {
+    public void equals3() {
         Assert.assertNotEquals(null, vectorFloat);
     }
     
     @Test
-    public void equalsOtherTypeTest() {
+    public void equals4() {
         float x = (float)vectorFloat.getX();
         float y = (float)vectorFloat.getY();
         Point2D p = new Point2D.Float(x, y);
@@ -143,9 +120,17 @@ public class Vector2DTest {
     }
     
     @Test
-    public void hashCodeTest() {
-        int expected = Objects.hash(vectorFloat.getX(), vectorFloat.getY());
-        Assert.assertEquals(expected, vectorFloat.hashCode());
+    public void clone1() {
+        vectorFloat.setPosition(xf, yf);
+        Object clone = vectorFloat.clone();
+        Assert.assertEquals(vectorFloat, clone);
+    }
+    
+    @Test
+    public void hashCode1() {
+        int hash = Objects.hash((double)xf, (double)yf);
+        vectorFloat.setPosition(xf, yf);
+        Assert.assertEquals(hash, vectorFloat.hashCode());
     }
     
     private static final float xf = 1.001f;

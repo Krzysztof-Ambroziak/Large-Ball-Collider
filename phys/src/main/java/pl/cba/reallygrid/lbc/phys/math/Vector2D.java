@@ -2,7 +2,7 @@ package pl.cba.reallygrid.lbc.phys.math;
 
 import java.util.Objects;
 
-public abstract class Vector2D {
+public abstract class Vector2D implements Cloneable {
     public abstract double getX();
     
     public abstract double getY();
@@ -22,6 +22,16 @@ public abstract class Vector2D {
     }
     
     public abstract Vector2D normalize();
+    
+    @Override
+    public Object clone() {
+        try {
+            return super.clone();
+        }
+        catch(CloneNotSupportedException e) {
+            throw new InternalError(e);
+        }
+    }
     
     @Override
     public int hashCode() {
