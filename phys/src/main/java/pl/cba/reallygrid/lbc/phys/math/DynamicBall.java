@@ -3,7 +3,8 @@ package pl.cba.reallygrid.lbc.phys.math;
 import java.awt.geom.Point2D;
 import java.util.Objects;
 
-public class DynamicBall {
+public class DynamicBall implements PositionBall {
+    @Override
     public Point2D getPosition() {
         return position;
     }
@@ -28,15 +29,17 @@ public class DynamicBall {
         this.mass = mass;
     }
     
-    private DynamicBall(Builder builder) {
-        position = builder.position;
-        velocity = builder.velocity;
-        mass = builder.mass;
+    public double getRadius() {
+        return radius;
+    }
+    
+    public void setRadius(double radius) {
+        this.radius = radius;
     }
     
     @Override
     public int hashCode() {
-        return Objects.hash(position, velocity, mass);
+        return Objects.hash(position, velocity, mass, radius);
     }
     
     @Override
@@ -44,16 +47,23 @@ public class DynamicBall {
         if(this == obj) {
             return true;
         }
-        if(obj instanceof DynamicBall) {
-            DynamicBall ball = (DynamicBall)obj;
-            return position.equals(ball.position) && velocity.equals(ball.velocity) && Objects.equals(mass, ball.mass);
+        if(!(obj instanceof DynamicBall)) {
+            return false;
         }
-        return false;
+        DynamicBall ball = (DynamicBall)obj;
+        return position.equals(ball.position)
+                && velocity.equals(ball.velocity)
+                && Objects.equals(mass, ball.mass)
+                && Objects.equals(radius, ball.radius);
     }
     
     private Point2D position;
+    
     private Vector2D velocity;
+    
     private double mass;
+    
+    private double radius;
     
     public static final class Builder {
         public static Builder floatBuilder() {
@@ -70,18 +80,23 @@ public class DynamicBall {
             return builder;
         }
         
+        public Builder setPosition(Point2D position) {
+            this.position.setLocation(position);
+            return this;
+        }
+        
+        public Builder setVelocity(Vector2D velocity) {
+            this.velocity.setPosition(velocity);
+            return this;
+        }
+        
         public Builder setMass(double mass) {
             this.mass = mass;
             return this;
         }
         
-        public Builder setPosition(Point2D position) {
-            this.position = (Point2D)position.clone();
-            return this;
-        }
-        
-        public Builder setVelocity(Vector2D velocity) {
-            this.velocity = (Vector2D)velocity.clone();
+        public Builder setRadius(double radius) {
+            this.radius = radius;
             return this;
         }
         
@@ -92,8 +107,23 @@ public class DynamicBall {
         private Builder() {
         }
         
+        private static final double DEFAULT_MASS = 10.0;
+        
+        private static final double DEFAULT_RADIUS = 10.0;
+        
         private Point2D position;
+        
         private Vector2D velocity;
-        private double mass = 0.0;
+        
+        private double mass = DEFAULT_MASS;
+        
+        private double radius = DEFAULT_RADIUS;
+    }
+    
+    private DynamicBall(Builder builder) {
+        position = builder.position;
+        velocity = builder.velocity;
+        mass = builder.mass;
+        radius = builder.radius;
     }
 }

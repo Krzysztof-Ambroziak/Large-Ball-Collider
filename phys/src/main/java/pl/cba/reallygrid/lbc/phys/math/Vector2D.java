@@ -7,6 +7,10 @@ public abstract class Vector2D implements Cloneable {
     
     public abstract double getY();
     
+    public void setPosition(Vector2D vector) {
+        setPosition(vector.getX(), vector.getY());
+    }
+    
     public abstract void setPosition(double x, double y);
     
     public double dotProduct(Vector2D v) {
@@ -43,11 +47,11 @@ public abstract class Vector2D implements Cloneable {
         if(this == obj) {
             return true;
         }
-        if(obj instanceof Vector2D) {
-            Vector2D v = (Vector2D)obj;
-            return Objects.equals(getX(), v.getX()) && Objects.equals(getY(), v.getY());
+        if(!(obj instanceof Vector2D)) {
+            return false;
         }
-        return false;
+        Vector2D v = (Vector2D)obj;
+        return Objects.equals(getX(), v.getX()) && Objects.equals(getY(), v.getY());
     }
     
     public static class Float extends Vector2D {

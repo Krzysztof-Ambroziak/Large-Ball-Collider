@@ -26,6 +26,13 @@ public class Vector2DTest {
     }
     
     @Test
+    public void setPosition1() {
+        Vector2D vector2 = new Vector2D.Float();
+        vector2.setPosition(vectorFloat);
+        Assert.assertEquals(vectorFloat, vector2);
+    }
+    
+    @Test
     public void getX() {
         vectorDouble.setPosition(xd, yd);
         Assert.assertEquals(xd, vectorDouble.getX(), 0.0);
@@ -116,7 +123,31 @@ public class Vector2DTest {
         float x = (float)vectorFloat.getX();
         float y = (float)vectorFloat.getY();
         Point2D p = new Point2D.Float(x, y);
-        Assert.assertFalse(vectorFloat.equals(p));
+        Assert.assertNotEquals(vectorFloat, p);
+    }
+    
+    @Test
+    public void equals5() {
+        float x = (float)vectorFloat.getX();
+        float y = (float)vectorFloat.getY();
+        Vector2D vector2 = new Vector2D.Float(x, y);
+        Assert.assertEquals(vectorFloat, vector2);
+    }
+    
+    @Test
+    public void equals6() {
+        float x = (float)vectorFloat.getX() + 0.038162F;
+        float y = (float)vectorFloat.getY();
+        Vector2D vector2 = new Vector2D.Float(x, y);
+        Assert.assertNotEquals(vectorFloat, vector2);
+    }
+    
+    @Test
+    public void equals7() {
+        float x = (float)vectorFloat.getX();
+        float y = (float)vectorFloat.getY() + 0.048159f;
+        Vector2D vector2 = new Vector2D.Float(x, y);
+        Assert.assertNotEquals(vectorFloat, vector2);
     }
     
     @Test
