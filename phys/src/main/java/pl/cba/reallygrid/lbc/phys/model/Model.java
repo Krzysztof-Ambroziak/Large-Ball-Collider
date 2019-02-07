@@ -18,14 +18,19 @@ public class Model {
     }
     
     public void makeGrid() throws NoObjectException {
-        int cellSize = (int)Math.round(2 * largestRadius() + 0.5);
+        int cellSize = (int)Math.ceil(2 * largestBall().getRadius());
         arrayMap = new ArrayMap<>(dimension, cellSize);
     }
     
-    private double largestRadius() throws NoObjectException {
+    private DynamicBall largestBall() throws NoObjectException {
         return balls.stream()
-                .map(DynamicBall::getRadius)
-                .reduce(Math::max)
+                .reduce(DynamicBall::largest)
+                .orElseThrow(NoObjectException::new);
+    }
+    
+    private DynamicBall fastestBall() throws NoObjectException {
+        return balls.stream()
+                .reduce(DynamicBall::fastest)
                 .orElseThrow(NoObjectException::new);
     }
     

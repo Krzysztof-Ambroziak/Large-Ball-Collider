@@ -4,6 +4,14 @@ import java.awt.geom.Point2D;
 import java.util.Objects;
 
 public class DynamicBall implements PositionBall {
+    public static DynamicBall largest(DynamicBall ball1, DynamicBall ball2) {
+        return ball1.getRadius() >= ball2.getRadius() ? ball1 : ball2;
+    }
+    
+    public static DynamicBall fastest(DynamicBall ball1, DynamicBall ball2) {
+        return ball1.getVelocity().lengthSq() >= ball2.getVelocity().lengthSq() ? ball1 : ball2;
+    }
+    
     @Override
     public Point2D getPosition() {
         return position;
