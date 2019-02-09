@@ -1,26 +1,24 @@
 package pl.cba.reallygrid.lbc.phys;
 
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 class EngineTimer {
     EngineTimer(EngineTimerTask task) {
-        timer = new Timer("TimerEngine: #" + count++);
+        executorService = Executors.newSingleThreadExecutor();
         this.task = task;
     }
     
     void start() {
-        timer.scheduleAtFixedRate(task, 0L, );
+        task.init();
+        executorService.execute(task);
     }
     
     void stop() {
-        timer.cancel();
-        timer.purge();
+        executorService.shutdown();
     }
     
-    private static int count = 0;
+    private ExecutorService executorService;
     
-    private final Timer timer;
-    
-    private final TimerTask task;
+    private final EngineTimerTask task;
 }

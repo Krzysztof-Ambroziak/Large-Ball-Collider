@@ -8,7 +8,7 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ArrayMap<T extends PositionBall> {
+public class ArrayMap<F, S extends PositionBall> {
     public ArrayMap(Dimension dimension, int cellSize) {
         this.dimension = dimension;
         this.cellSize = cellSize;
@@ -22,17 +22,18 @@ public class ArrayMap<T extends PositionBall> {
         }
     }
     
-    public void put(T ball) {
-        int x = (int)ball.getPosition().getX() / cellSize;
-        int y = (int)ball.getPosition().getY() / cellSize;
+    public void put(Pair<F, S> pair) {
+        Point2D position = pair.getSecond().getPosition();
+        int x = (int)position.getX() / cellSize;
+        int y = (int)position.getY() / cellSize;
         int index = y * collumns + x;
         
-        List<T> list = array[index];
-        list.add(ball);
+        List<Pair<F, S>> list = array[index];
+        list.add(pair);
         ++size;
     }
     
-    public List<T> get(Point2D point) {
+    public List<Pair<F, S>> get(Point2D point) {
         int x = (int)point.getX() / cellSize;
         int y = (int)point.getY() / cellSize;
         int index = y * collumns + x;
@@ -54,5 +55,5 @@ public class ArrayMap<T extends PositionBall> {
     
     private int size;
     
-    private List<T>[] array;
+    private List<Pair<F, S>>[] array;
 }

@@ -4,43 +4,67 @@ import pl.cba.reallygrid.lbc.phys.exceptions.NoObjectException;
 import pl.cba.reallygrid.lbc.phys.math.DynamicBall;
 
 import java.awt.Dimension;
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Model {
     public void add(DynamicBall ball) {
-        balls.add(ball);
+        Point2D startPosition = (Point2D)ball.getPosition().clone();
+        StartTimePosition startTimePosition = new StartTimePosition(startPosition);
+        Pair<StartTimePosition, DynamicBall> pair = new Pair<>(startTimePosition, ball);
+        pairs.add(pair);
     }
     
     public void setCanvasSize(int width, int height) {
-        dimension.width = width;
-        dimension.height = height;
+        dimension = new Dimension(width, height);
     }
     
     public void makeGrid() throws NoObjectException {
         int cellSize = (int)Math.ceil(2 * largestBall().getRadius());
-        arrayMap = new ArrayMap<>(dimension, cellSize);
+        arrayMap = new ArrayMap(dimension, cellSize);
     }
     
     private DynamicBall largestBall() throws NoObjectException {
-        return balls.stream()
+        return pairs.stream()
+                .map(Pair::getSecond)
                 .reduce(DynamicBall::largest)
                 .orElseThrow(NoObjectException::new);
     }
     
-    private DynamicBall fastestBall() throws NoObjectException {
-        return balls.stream()
-                .reduce(DynamicBall::fastest)
-                .orElseThrow(NoObjectException::new);
-    }
-    
     public void addBallsToGrid() {
-        balls.forEach(ball -> arrayMap.put(ball));
+        pairs.forEach(arrayMap::put);
     }
     
-    private Dimension dimension = new Dimension();
+    public List<Pair<StartTimePosition, DynamicBall>> getPairs() {
+        return pairs;
+    }
     
-    private List<DynamicBall> balls = new ArrayList<>();
+    private Dimension dimension;
     
-    private ArrayMap<DynamicBall> arrayMap;
+    private List<Pair<StartTimePosition, DynamicBall>> pairs = new ArrayList<>();
+    
+    private ArrayMap<StartTimePosition, DynamicBall> arrayMap;
+    
+    public class StartTimePosition {
+        StartTimePosition(Point2D position) {
+            this.position = position;
+        }
+        
+        public long getTime() {
+            return time;
+        }
+        
+        public void setTime(long time) {
+            this.time = time;
+        }
+        
+        public Point2D getPosition() {
+            return position;
+        }
+        
+        private long time;
+        
+        private final Point2D position;
+    }
 }
