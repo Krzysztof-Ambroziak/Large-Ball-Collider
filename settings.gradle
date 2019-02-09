@@ -1,3 +1,4 @@
 rootProject.name = 'lbc-all'
 include 'phys'
+include 'swing'
 

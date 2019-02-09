@@ -65,6 +65,15 @@ public class DynamicBall implements PositionBall {
                 && Objects.equals(radius, ball.radius);
     }
     
+    @Override
+    public String toString() {
+        return DynamicBall.class.toString() + '{' +
+                "position: (" + position.getX() + ", " + position.getY() + "), " +
+                "velocity: [" + velocity.getX() + ", " + velocity.getY() + "], " +
+                "mass: " + mass + ", " +
+                "radius: " + radius + '}';
+    }
+    
     private Point2D position;
     
     private Vector2D velocity;

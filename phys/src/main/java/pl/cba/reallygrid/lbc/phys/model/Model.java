@@ -46,7 +46,7 @@ public class Model {
     
     private ArrayMap<StartTimePosition, DynamicBall> arrayMap;
     
-    public class StartTimePosition {
+    public static class StartTimePosition {
         StartTimePosition(Point2D position) {
             this.position = position;
         }
