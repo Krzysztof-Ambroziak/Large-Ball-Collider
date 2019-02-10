@@ -2,6 +2,10 @@ plugins {
     id 'java'
 }
 
+ext {
+    slf4jVersion = '1.7.25'
+}
+
 group 'pl.cba.reallygrid'
 version '1.0-SNAPSHOT'
 
@@ -13,5 +17,6 @@ repositories {
 }
 
 dependencies {
+    implementation "org.slf4j:slf4j-api:${slf4jVersion}"
     implementation project(':phys')
 }

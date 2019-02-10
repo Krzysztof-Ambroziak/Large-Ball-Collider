@@ -27,6 +27,10 @@ public class Preferences {
     
     static final int CANVAS_HEIGHT_DEFAULT_VALUE;
     
+    static final int SIDE_PANEL_WIDTH_DEFAULT_VALUE;
+    
+    static final int SIDE_PANEL_HEIGHT_DEFAULT_VALUE;
+    
     static {
         PREFERENCES = java.util.prefs.Preferences.userNodeForPackage(LargeBallColliderApplication.class);
         
@@ -35,7 +39,11 @@ public class Preferences {
         
         CANVAS_WIDTH_DEFAULT_VALUE = 800;
         CANVAS_HEIGHT_DEFAULT_VALUE = CANVAS_WIDTH_DEFAULT_VALUE;
-        POSITION_X_DEFAULT_VALUE = (screenSize.width - CANVAS_WIDTH_DEFAULT_VALUE) / 2;
+        
+        SIDE_PANEL_WIDTH_DEFAULT_VALUE = 200;
+        SIDE_PANEL_HEIGHT_DEFAULT_VALUE = CANVAS_HEIGHT_DEFAULT_VALUE;
+        
+        POSITION_X_DEFAULT_VALUE = (screenSize.width - (CANVAS_WIDTH_DEFAULT_VALUE + SIDE_PANEL_WIDTH_DEFAULT_VALUE)) / 2;
         POSITION_Y_DEFAULT_VALUE = (screenSize.height - CANVAS_HEIGHT_DEFAULT_VALUE) / 2;
     }
 }

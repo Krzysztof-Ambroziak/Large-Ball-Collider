@@ -8,8 +8,9 @@ import java.awt.BorderLayout;
 import java.awt.HeadlessException;
 
 class Window extends JFrame {
-    Window(Canvas canvas) throws HeadlessException {
+    Window(Canvas canvas, SidePanel sidePanel) throws HeadlessException {
         add(canvas, BorderLayout.CENTER);
+        add(sidePanel, BorderLayout.EAST);
     }
     
     void init() {

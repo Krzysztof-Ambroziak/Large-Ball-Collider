@@ -22,13 +22,13 @@ public class Model {
     
     public void makeGrid() throws NoObjectException {
         int cellSize = (int)Math.ceil(2 * largestBall().getRadius());
-        arrayMap = new ArrayMap(dimension, cellSize);
+        arrayMap = new ArrayMap<>(dimension, cellSize);
     }
     
     private DynamicBall largestBall() throws NoObjectException {
         return pairs.stream()
                 .map(Pair::getSecond)
-                .reduce(DynamicBall::largest)
+                .reduce(DynamicBall::larger)
                 .orElseThrow(NoObjectException::new);
     }
     

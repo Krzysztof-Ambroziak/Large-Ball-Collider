@@ -14,8 +14,13 @@ public class EngineTimerTask implements Runnable {
     
     @Override
     public void run() {
+        running = true;
         init();
         loop();
+    }
+    
+    void stop() {
+        running = false;
     }
     
     void init() {
@@ -24,7 +29,7 @@ public class EngineTimerTask implements Runnable {
     }
     
     private void loop() {
-        while(true) {
+        while(running) {
             updateTimestamp();
             move();
             checkCollision();
@@ -58,7 +63,7 @@ public class EngineTimerTask implements Runnable {
     
     private void sleep() {
         try {
-            Thread.sleep(0);
+            Thread.sleep(1);
         }
         catch(InterruptedException e) {
             System.err.println(e.getMessage());
@@ -68,6 +73,8 @@ public class EngineTimerTask implements Runnable {
     private static final double SLOWING_FACTOR = 0.001;
     
     private final Model model;
+    
+    private boolean running = false;
     
     private long currentTimestamp;
 }
