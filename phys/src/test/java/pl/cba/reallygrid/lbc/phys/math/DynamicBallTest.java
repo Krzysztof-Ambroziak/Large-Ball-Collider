@@ -4,6 +4,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import pl.cba.reallygrid.lbc.phys.model.DynamicBall;
 
 import java.awt.geom.Point2D;
 import java.util.Calendar;

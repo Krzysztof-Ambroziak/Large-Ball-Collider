@@ -1,16 +1,18 @@
 package pl.cba.reallygrid.lbc.phys;
 
-import pl.cba.reallygrid.lbc.phys.exceptions.NoObjectException;
-import pl.cba.reallygrid.lbc.phys.math.DynamicBall;
+import pl.cba.reallygrid.lbc.phys.model.DynamicBall;
+import pl.cba.reallygrid.lbc.phys.model.DynamicBallHelper;
 import pl.cba.reallygrid.lbc.phys.model.Model;
-import pl.cba.reallygrid.lbc.phys.model.Pair;
+import pl.cba.reallygrid.util.Pair;
 
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Point;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.Point2D;
+import java.awt.RenderingHints;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Timer;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 public class Engine {
@@ -18,46 +20,52 @@ public class Engine {
         model.add(ball);
     }
     
-    public void start(int width, int height) throws NoObjectException {
-        prepare(width, height);
+    public List<DynamicBall> getBalls(int x, int y) {
+        return model.getPairs().stream()
+                .filter(pair -> (x - pair.getFirst().getPosition().getX()) * (x - pair.getFirst().getPosition().getX()) + (y - pair.getFirst().getPosition().getY()) * (y - pair.getFirst().getPosition().getY()) <= pair.getFirst().getRadius() * pair.getFirst().getRadius())
+                .map(Pair::getFirst)
+                .collect(Collectors.toList());
+    }
+    
+    public void setDimension(Dimension dimension) {
+        model.setDimension(dimension);
+    }
+    
+    public void start() {
+        prepare();
         run();
     }
     
-    private void prepare(int width, int height) throws NoObjectException {
-        model.setCanvasSize(width, height);
-        model.makeGrid();
-        model.addBallsToGrid();
-        EngineTimerTask task = new EngineTimerTask(model);
-        engineTimer = new EngineTimer(task);
+    private void prepare() {
+        model.getPairs().sort(Comparator.comparingInt(o -> o.getSecond().getId()));
+        task = new EngineTimerTask(model);
+        timer = new Timer("Animation: #" + animCounter.getAndIncrement());
     }
     
     private void run() {
-        engineTimer.start();
+        task.init();
+        timer.scheduleAtFixedRate(task, 0L, 10L);
     }
     
     public void cancel() {
-        engineTimer.stop();
+        timer.cancel();
+        timer.purge();
     }
     
     public void draw(Graphics g) {
-        for(Pair<Model.StartTimePosition, DynamicBall> pair : model.getPairs()) {
-            DynamicBall ball = pair.getSecond();
-            Point2D position = ball.getPosition();
-            double radius = ball.getRadius();
-            int size = (int)Math.round(2 * radius);
-            ((Graphics2D)g).setTransform(AffineTransform.getTranslateInstance(position.getX() - radius, position.getY() - radius));
+        ((Graphics2D)g).setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        for(Pair<DynamicBall, DynamicBallHelper> pair : model.getPairs()) {
+            int size = (int)Math.round(2 * pair.getFirst().getRadius());
+            ((Graphics2D)g).setTransform(pair.getSecond().getTransform());
             g.drawOval(0, 0, size, size);
         }
     }
     
-    public List<DynamicBall> getBalls(Point point) {
-        return model.getPairs().stream()
-                .map(Pair::getSecond)
-                .filter(ball -> DynamicBall.isInside(ball, point))
-                .collect(Collectors.toList());
-    }
+    private static final AtomicInteger animCounter = new AtomicInteger();
     
     private Model model = new Model();
     
-    private EngineTimer engineTimer;
+    private Timer timer;
+    
+    private EngineTimerTask task;
 }

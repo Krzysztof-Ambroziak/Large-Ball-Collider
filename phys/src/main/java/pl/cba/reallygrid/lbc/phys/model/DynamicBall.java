@@ -1,10 +1,14 @@
-package pl.cba.reallygrid.lbc.phys.math;
+package pl.cba.reallygrid.lbc.phys.model;
+
+import pl.cba.reallygrid.lbc.phys.math.Vector2D;
+import pl.cba.reallygrid.util.ShapePosition;
+import pl.cba.reallygrid.util.ShapeSize;
 
 import java.awt.Point;
 import java.awt.geom.Point2D;
 import java.util.Objects;
 
-public class DynamicBall implements PositionBall {
+public class DynamicBall implements ShapePosition, ShapeSize {
     public static DynamicBall larger(DynamicBall ball1, DynamicBall ball2) {
         return ball1.getRadius() >= ball2.getRadius() ? ball1 : ball2;
     }
@@ -22,16 +26,16 @@ public class DynamicBall implements PositionBall {
         return position;
     }
     
-    public void setPosition(Point2D position) {
-        this.position = position;
+    public void setPosition(double x, double y) {
+        position.setLocation(x, y);
     }
     
     public Vector2D getVelocity() {
         return velocity;
     }
     
-    public void setVelocity(Vector2D velocity) {
-        this.velocity = velocity;
+    public void setVelocity(double velX, double velY) {
+        velocity.setPosition(velX, velY);
     }
     
     public double getMass() {
@@ -48,6 +52,18 @@ public class DynamicBall implements PositionBall {
     
     public void setRadius(double radius) {
         this.radius = radius;
+    }
+    
+    @Override
+    public double getWidth() {
+        // todo albo: 'return radius + radius'. Dodawanie dwóch liczb zmiennoprzecinkowych jest zapewne szybsze niż mnożenie
+        return 2 * radius;
+    }
+    
+    @Override
+    public double getHeight() {
+        // todo jak wyżej
+        return 2 * radius;
     }
     
     @Override
@@ -72,16 +88,16 @@ public class DynamicBall implements PositionBall {
     
     @Override
     public String toString() {
-        return DynamicBall.class.toString() + '{' +
+        return "DynamicBall{" +
                 "position: (" + position.getX() + ", " + position.getY() + "), " +
                 "velocity: [" + velocity.getX() + ", " + velocity.getY() + "], " +
                 "mass: " + mass + ", " +
                 "radius: " + radius + '}';
     }
     
-    private Point2D position;
+    private final Point2D position;
     
-    private Vector2D velocity;
+    private final Vector2D velocity;
     
     private double mass;
     
@@ -102,13 +118,13 @@ public class DynamicBall implements PositionBall {
             return builder;
         }
         
-        public Builder setPosition(Point2D position) {
-            this.position.setLocation(position);
+        public Builder setPosition(double x, double y) {
+            this.position.setLocation(x, y);
             return this;
         }
         
-        public Builder setVelocity(Vector2D velocity) {
-            this.velocity.setPosition(velocity);
+        public Builder setVelocity(double x, double y) {
+            this.velocity.setPosition(x, y);
             return this;
         }
         

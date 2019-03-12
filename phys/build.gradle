@@ -20,8 +20,9 @@ repositories {
 }
 
 dependencies {
+    implementation project(":util")
     implementation "org.slf4j:slf4j-simple:${slf4jVersion}"
-    testCompile "junit:junit:${junitVersion}"
+    testImplementation "junit:junit:${junitVersion}"
 }
 
 jacoco {

@@ -1,6 +1,6 @@
 package pl.cba.reallygrid.lbc.swing.service;
 
-import pl.cba.reallygrid.lbc.phys.math.DynamicBall;
+import pl.cba.reallygrid.lbc.phys.model.DynamicBall;
 import pl.cba.reallygrid.lbc.swing.util.Preferences;
 import pl.cba.reallygrid.lbc.swing.util.PreferencesKey;
 

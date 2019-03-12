@@ -3,11 +3,19 @@ package pl.cba.reallygrid.lbc.phys.math;
 import java.util.Objects;
 
 public abstract class Vector2D implements Cloneable {
+    public static double dotProduct(double x1, double y1, double x2, double y2) {
+        return x1 * x2 + y1 * y2;
+    }
+    
+    public static double lengthSq(double x, double y) {
+        return x * x + y * y;
+    }
+    
     public abstract double getX();
     
     public abstract double getY();
     
-    public void setPosition(Vector2D vector) {
+    public synchronized void setPosition(Vector2D vector) {
         setPosition(vector.getX(), vector.getY());
     }
     
@@ -28,9 +36,9 @@ public abstract class Vector2D implements Cloneable {
     public abstract Vector2D normalize();
     
     @Override
-    public Object clone() {
+    public Vector2D clone() {
         try {
-            return super.clone();
+            return (Vector2D)super.clone();
         }
         catch(CloneNotSupportedException e) {
             throw new InternalError(e);
@@ -64,17 +72,17 @@ public abstract class Vector2D implements Cloneable {
         }
         
         @Override
-        public double getX() {
+        public synchronized double getX() {
             return x;
         }
         
         @Override
-        public double getY() {
+        public synchronized double getY() {
             return y;
         }
         
         @Override
-        public void setPosition(double x, double y) {
+        public synchronized void setPosition(double x, double y) {
             this.x = (float)x;
             this.y = (float)y;
         }
@@ -101,17 +109,17 @@ public abstract class Vector2D implements Cloneable {
         }
         
         @Override
-        public double getX() {
+        public synchronized double getX() {
             return x;
         }
         
         @Override
-        public double getY() {
+        public synchronized double getY() {
             return y;
         }
         
         @Override
-        public void setPosition(double x, double y) {
+        public synchronized void setPosition(double x, double y) {
             this.x = x;
             this.y = y;
         }
