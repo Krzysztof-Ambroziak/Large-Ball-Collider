@@ -62,6 +62,11 @@ public abstract class Vector2D implements Cloneable {
         return Objects.equals(getX(), v.getX()) && Objects.equals(getY(), v.getY());
     }
     
+    @Override
+    public String toString() {
+        return "Vector[" + getX() + ", " + getY() + ']';
+    }
+    
     public static class Float extends Vector2D {
         public Float() {
         }

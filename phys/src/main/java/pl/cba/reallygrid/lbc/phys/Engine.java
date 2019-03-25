@@ -44,7 +44,7 @@ public class Engine {
     
     private void run() {
         task.init();
-        timer.scheduleAtFixedRate(task, 0L, 10L);
+        timer.scheduleAtFixedRate(task, 0L, 16L);
     }
     
     public void cancel() {

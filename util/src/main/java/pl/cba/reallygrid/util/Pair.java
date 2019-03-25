@@ -16,9 +16,10 @@ public class Pair<F, S> {
     
     @Override
     public String toString() {
-        return "Pair<" + first.getClass().getSimpleName() + ", " +
-                second.getClass().getSimpleName() + "> {" +
-                first + ", " + second + '}';
+        return "Pair{" +
+                "first=" + first +
+                ", second=" + second +
+                '}';
     }
     
     private final F first;

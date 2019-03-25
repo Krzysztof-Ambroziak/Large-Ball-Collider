@@ -160,7 +160,7 @@ public class GeomMap<T extends ShapePosition & ShapeSize> {
         return posX(position) != posX(oldX) || posY(position) != posY(oldY);
     }
     
-    public Iterator<Pair<? extends T, ?>> neighbours(double x, double y) {
+    public Iterator<Pair<T, ?>> neighbours(double x, double y) {
         return new Itr(x, y);
     }
     
@@ -176,8 +176,8 @@ public class GeomMap<T extends ShapePosition & ShapeSize> {
     
     private int height = 0;
     
-    private class Itr implements Iterator<Pair<? extends T, ?>> {
-        public Itr(double x, double y) {
+    private class Itr implements Iterator<Pair<T, ?>> {
+        Itr(double x, double y) {
             posX = posX(x);
             posY = posY(y);
             this.x = posX - 1;
@@ -203,8 +203,8 @@ public class GeomMap<T extends ShapePosition & ShapeSize> {
         }
         
         @Override
-        public Pair<? extends T, ?> next() {
-            return elementsLists[y * columns + x].get(index);
+        public Pair<T, ?> next() {
+            return (Pair<T, ?>)elementsLists[y * columns + x].get(index);
         }
         
         private final int posX;

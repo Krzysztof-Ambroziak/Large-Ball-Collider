@@ -7,16 +7,24 @@ import java.awt.Dimension;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 public class Model {
     public void add(DynamicBall ball) {
-        Point2D startPosition = (Point2D)ball.getPosition().clone();
-        DynamicBallHelper helper = new DynamicBallHelper(startPosition);
-        helper.setTranslate(startPosition, ball.getRadius());
-        Pair<DynamicBall, DynamicBallHelper> pair = new Pair<>(ball, helper);
-        pairs.add(pair);
-        arrayMap.add(pair);
+        DynamicBallHelper helper = new DynamicBallHelper(ball);
+        Pair<DynamicBall, DynamicBallHelper> tuple = new Pair<>(ball, helper);
+        pairs.add(tuple);
+        arrayMap.add(tuple);
+    }
+    
+    public void addToImpactQueue(Pair<DynamicBall, DynamicBallHelper> pair) {
+        impactQueue.add(pair);
+    }
+    
+    public Pair<DynamicBall, DynamicBallHelper> pool() {
+        return impactQueue.poll();
     }
     
     public void setDimension(Dimension dimension) {
@@ -36,7 +44,7 @@ public class Model {
         arrayMap.realloc(pair, oldX, oldY);
     }
     
-    public Iterator<Pair<? extends DynamicBall, ?>> neighbours(Point2D position) {
+    public Iterator<Pair<DynamicBall, ?>> neighbours(Point2D position) {
         return arrayMap.neighbours(position.getX(), position.getY());
     }
     
@@ -44,11 +52,33 @@ public class Model {
         return pairs;
     }
     
+    public long getPreviousTimestamp() {
+        return previousTimestamp;
+    }
+    
+    public void setPreviousTimestamp(long previousTimestamp) {
+        this.previousTimestamp = previousTimestamp;
+    }
+    
+    public long getCurrentTimestamp() {
+        return currentTimestamp;
+    }
+    
+    public void setCurrentTimestamp(long currentTimestamp) {
+        this.currentTimestamp = currentTimestamp;
+    }
+    
     private List<Pair<DynamicBall, DynamicBallHelper>> pairs = new ArrayList<>();
     
     private GeomMap<DynamicBall> arrayMap = new GeomMap<>();
     
+    private Queue<Pair<DynamicBall, DynamicBallHelper>> impactQueue = new LinkedList<>();
+    
     private int width;
     
     private int height;
+    
+    private long previousTimestamp;
+    
+    private long currentTimestamp;
 }
