@@ -19,6 +19,14 @@ public class Model {
         arrayMap.add(tuple);
     }
     
+    public int getBallId(DynamicBall ball) {
+        return pairs.stream()
+                .filter(pair -> pair.getFirst() == ball)
+                .map(pair -> pair.getSecond().getId())
+                .findFirst()
+                .orElse(-1);
+    }
+    
     public void addToImpactQueue(Pair<DynamicBall, DynamicBallHelper> pair) {
         impactQueue.add(pair);
     }

@@ -1,5 +1,6 @@
 package pl.cba.reallygrid.lbc.swing.gui;
 
+import pl.cba.reallygrid.lbc.phys.model.DynamicBall;
 import pl.cba.reallygrid.lbc.swing.service.ActionProvider;
 import pl.cba.reallygrid.lbc.swing.util.Preferences;
 import pl.cba.reallygrid.lbc.swing.util.PreferencesKey;
@@ -9,15 +10,29 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 
-public class SidePanel extends JPanel {
+class SidePanel extends JPanel {
     SidePanel() {
-        setPreferredSize(new Dimension(Preferences.getInteger(PreferencesKey.SIDE_PANEL_WIDTH),
-                                       Preferences.getInteger(PreferencesKey.SIDE_PANEL_HEIGHT)));
-        add(start);
-        add(stop);
+        super(new GridBagLayout());
+//        setPreferredSize(new Dimension(Preferences.getInteger(PreferencesKey.SIDE_PANEL_WIDTH),
+//                                       Preferences.getInteger(PreferencesKey.SIDE_PANEL_HEIGHT)));
+        JPanel startStopInnerPanel = new JPanel();
+        startStopInnerPanel.add(start);
+        startStopInnerPanel.add(stop);
+        add(startStopInnerPanel,
+            new GBC(0, 0)
+                    .insets(4, 8, 2, 8));
+        add(ballInformation,
+            new GBC(0, 1)
+                    .weight(0.0, 1.0)
+                    .insets(2, 8, 4, 8)
+                    .anchor(GBC.NORTH));
+        
     }
     
     void addAction(ActionProvider actions) {
@@ -25,11 +40,11 @@ public class SidePanel extends JPanel {
         stop.addActionListener(actions.stopSimulate);
     }
     
-    @Override
-    protected void paintComponent(Graphics g) {
-        ((Graphics2D)g).setBackground(Color.BLACK);
-        g.clearRect(0, 0, getWidth(), getHeight());
+    void setActiveBall(DynamicBall activeBall, int id) {
+        ballInformation.setActiveBall(activeBall, id);
     }
+    
+    private BallInformation ballInformation = new BallInformation();
     
     private AbstractButton start = new JButton("Start");
     

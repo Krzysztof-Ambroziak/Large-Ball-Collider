@@ -16,8 +16,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 public class Engine {
-    public void addBall(DynamicBall ball) {
+    public int addBall(DynamicBall ball) {
         model.add(ball);
+        return model.getBallId(ball);
     }
     
     public List<DynamicBall> getBalls(int x, int y) {

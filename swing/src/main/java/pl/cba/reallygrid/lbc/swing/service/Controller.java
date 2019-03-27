@@ -4,8 +4,8 @@ import pl.cba.reallygrid.lbc.phys.Engine;
 import pl.cba.reallygrid.lbc.phys.model.DynamicBall;
 import pl.cba.reallygrid.lbc.swing.gui.GuiProvider;
 import pl.cba.reallygrid.lbc.swing.gui.Renderer;
+import pl.cba.reallygrid.lbc.swing.model.Model;
 
-import java.awt.Dimension;
 import java.awt.Point;
 import java.util.List;
 import java.util.Timer;
@@ -23,22 +23,26 @@ public class Controller {
     }
     
     void addBall(int x, int y) {
+        DynamicBall ball;
+        int id;
         if(b) {
-            DynamicBall ball = DynamicBall.Builder.floatBuilder()
+            ball = DynamicBall.Builder.floatBuilder()
                     .setPosition(x, y)
                     .setVelocity(100.0f, 0.0f) // todo może random...
                     .build();
-            engine.addBall(ball);
+            id = engine.addBall(ball);
             b = false;
         }
         else {
-            DynamicBall ball = DynamicBall.Builder.floatBuilder()
+            ball = DynamicBall.Builder.floatBuilder()
                     .setPosition(x, y)
                     .setVelocity(-100.0f, 0.0f) // todo może random...
                     .build();
-            engine.addBall(ball);
+            id = engine.addBall(ball);
             b = true;
         }
+        model.setActiveBall(ball, id);
+        guiProvider.setActiveBall(ball, id);
     }
     
     void start() {
@@ -49,6 +53,8 @@ public class Controller {
             @Override
             public void run() {
                 guiProvider.refresh();
+                guiProvider.setActiveBall(model.getActiveBall(), model.getActiveBallId());
+                guiProvider.repaintSidePanel();
             }
         }, 0L, 1000 / 60);
     }
@@ -65,11 +71,18 @@ public class Controller {
     
     private GuiProvider guiProvider = new GuiProvider();
     
-    private ActionProvider actions = new ActionProvider(this);
+    private Model model = new Model();
+    
+    private ActionProvider actions = new ActionProvider(this, model);
     
     private Engine engine = new Engine();
     
     private Renderer renderer = new Renderer(engine);
     
     private Timer timer;
+    
+    void refreshAll() {
+        guiProvider.refresh();
+        guiProvider.repaintSidePanel();
+    }
 }

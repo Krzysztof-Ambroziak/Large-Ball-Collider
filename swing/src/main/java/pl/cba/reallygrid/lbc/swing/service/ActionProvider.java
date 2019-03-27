@@ -1,6 +1,7 @@
 package pl.cba.reallygrid.lbc.swing.service;
 
 import pl.cba.reallygrid.lbc.phys.model.DynamicBall;
+import pl.cba.reallygrid.lbc.swing.model.Model;
 import pl.cba.reallygrid.lbc.swing.util.Preferences;
 import pl.cba.reallygrid.lbc.swing.util.PreferencesKey;
 
@@ -31,11 +32,9 @@ public class ActionProvider {
             List<DynamicBall> balls = controller.getBalls(point);
             if(balls.isEmpty()) {
                 controller.addBall(point.x, point.y);
-                e.getComponent().repaint();
             }
-            else {
-                // todo pokazac okienko z możliwością zmiany prędkości, promienia i masy
-            }
+            
+            controller.refreshAll();
         }
     };
     
@@ -53,11 +52,14 @@ public class ActionProvider {
         }
     };
     
-    ActionProvider(Controller controller) {
+    ActionProvider(Controller controller, Model model) {
         this.controller = controller;
+        this.model = model;
     }
     
     private final Controller controller;
+    
+    private final Model model;
     
     private static class WindowPositionListener extends ComponentAdapter {
         void saveNewPlace(Rectangle bounds) {

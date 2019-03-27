@@ -1,5 +1,6 @@
 package pl.cba.reallygrid.lbc.swing.gui;
 
+import pl.cba.reallygrid.lbc.phys.model.DynamicBall;
 import pl.cba.reallygrid.lbc.swing.service.ActionProvider;
 
 import javax.swing.JOptionPane;
@@ -32,6 +33,14 @@ public class GuiProvider {
     
     public void refresh() {
         canvas.repaint();
+    }
+    
+    public void repaintSidePanel() {
+        sidePanel.repaint();
+    }
+    
+    public void setActiveBall(DynamicBall activeBall, int id) {
+        sidePanel.setActiveBall(activeBall, id);
     }
     
     public void showWarningPane(String text) {
