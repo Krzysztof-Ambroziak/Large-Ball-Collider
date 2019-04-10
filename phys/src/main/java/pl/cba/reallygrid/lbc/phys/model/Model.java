@@ -52,6 +52,11 @@ public class Model {
         arrayMap.realloc(pair, oldX, oldY);
     }
     
+    public void realloc(Pair<DynamicBall, DynamicBallHelper> pair, double radius) {
+        Point2D position = pair.getFirst().getPosition();
+        arrayMap.realloc(pair, position.getX(), position.getY());
+    }
+    
     public Iterator<Pair<DynamicBall, ?>> neighbours(Point2D position) {
         return arrayMap.neighbours(position.getX(), position.getY());
     }

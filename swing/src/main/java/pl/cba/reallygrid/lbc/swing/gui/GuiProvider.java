@@ -6,6 +6,7 @@ import pl.cba.reallygrid.lbc.swing.service.ActionProvider;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import java.awt.Dimension;
+import java.awt.Point;
 
 public class GuiProvider {
     public GuiProvider() {
@@ -20,6 +21,8 @@ public class GuiProvider {
     public void addAction(ActionProvider actions) {
         window.addComponentListener(actions.windowListener);
         canvas.addMouseListener(actions.mouseListeners);
+        canvas.addMouseMotionListener(actions.velocityAction);
+        ballInformation.addAction(actions.saveAction);
         sidePanel.addAction(actions);
     }
     
@@ -40,7 +43,11 @@ public class GuiProvider {
     }
     
     public void setActiveBall(DynamicBall activeBall, int id) {
-        sidePanel.setActiveBall(activeBall, id);
+        ballInformation.setActiveBall(activeBall, id);
+    }
+    
+    public void setVelocity(Point from, Point to) {
+        canvas.setVelocity(from, to);
     }
     
     public void showWarningPane(String text) {
@@ -51,5 +58,7 @@ public class GuiProvider {
     
     private final Canvas canvas = new Canvas();
     
-    private final SidePanel sidePanel = new SidePanel();
+    private final BallInformation ballInformation = new BallInformation();
+    
+    private final SidePanel sidePanel = new SidePanel(ballInformation);
 }

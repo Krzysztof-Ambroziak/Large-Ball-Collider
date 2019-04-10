@@ -9,9 +9,10 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import java.awt.GridBagLayout;
+import java.awt.event.ActionListener;
 import java.awt.geom.Point2D;
 
-class BallInformation extends JPanel {
+public class BallInformation extends JPanel {
     BallInformation() {
         super(new GridBagLayout());
         massFld.setColumns(11);
@@ -47,6 +48,18 @@ class BallInformation extends JPanel {
         String velX = Double.toString(Math.round(vel.getX() * 100) / 100.0);
         String velY = Double.toString(Math.round(vel.getY() * 100) / 100.0);
         velocityLbl.setText('[' + velX + ", " + velY + ']');
+    }
+    
+    void addAction(ActionListener saveAction) {
+        saveBtn.addActionListener(saveAction);
+    }
+    
+    public String getMass() {
+        return massFld.getText();
+    }
+    
+    public String getRadius() {
+        return radiusFld.getText();
     }
     
     private JLabel idLbl = new JLabel();

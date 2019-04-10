@@ -149,15 +149,15 @@ public class GeomMap<T extends ShapePosition & ShapeSize> {
     }
     
     public void realloc(Pair<? extends T, ?> pair, double oldX, double oldY) {
-        if(assertRealloc(pair, oldX, oldY)) {
+        if(assertRealloc(pair.getFirst(), oldX, oldY)) {
             remove(pair, oldX, oldY);
             add(pair);
         }
     }
     
-    private boolean assertRealloc(Pair<? extends T, ?> pair, double oldX, double oldY) {
-        Point2D position = pair.getFirst().getPosition();
-        return posX(position) != posX(oldX) || posY(position) != posY(oldY);
+    private boolean assertRealloc(T shape, double oldX, double oldY) {
+        Point2D position = shape.getPosition();
+        return posX(position) != posX(oldX) || posY(position) != posY(oldY) || shape.getWidth() > width || shape.getHeight() > height;
     }
     
     public Iterator<Pair<T, ?>> neighbours(double x, double y) {
